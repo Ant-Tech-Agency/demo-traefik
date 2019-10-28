@@ -9,8 +9,8 @@
 
 [api]
   dashboard = true
-  insecure = true
-  debug = true
+  # insecure = true
+  # debug = true
 
 [entryPoints]
   [entryPoints.web]
