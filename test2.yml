@@ -1,0 +1,33 @@
+version: "3"
+services:
+  app:
+    # A container that exposes an API to show its IP address
+    image: linrium/node-app:1.0.2
+    depends_on:
+      - reverse-proxy
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 3
+      restart_policy:
+        max_attempts: 3
+        condition: on-failure
+      update_config:
+        parallelism: 3
+        delay: 10s
+      labels:
+        - "traefik.enable=true"
+        # - "traefik.http.routers.app-http.middlewares=auth"
+        # - "traefik.http.middlewares.whoami-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.app-http.entrypoints=web"
+        - "traefik.http.routers.app-http.rule=Host(`app.local`)"
+        # - "traefik.http.routers.whoami-http.middlewares=whoami-https@docker"
+        # - "traefik.http.routers.whoami.entrypoints=web-secure"
+        # - "traefik.http.routers.whoami.tls=true"
+        # - "traefik.http.routers.whoami.tls.certresolver=default"
+        - "traefik.http.services.app.loadbalancer.sticky=true"
+        - "traefik.http.services.app.loadbalancer.sticky.cookie.name=StickyCookie"
+        - "traefik.http.services.app.loadbalancer.server.port=3000"
+networks:
+  traefik-public:
+    external: true

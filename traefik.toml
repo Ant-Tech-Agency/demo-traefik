@@ -1,16 +1,16 @@
 [log]
-  level = "ERROR"
+  level = "DEBUG"
 
 [providers.docker]
   exposedByDefault = false
   endpoint = "unix:///var/run/docker.sock"
-  network = "traefik"
+  network = "rtraefik-public"
   swarmMode = true
 
 [api]
   dashboard = true
-  # insecure = true
-  # debug = true
+  insecure = true
+  debug = true
 
 [entryPoints]
   [entryPoints.web]
